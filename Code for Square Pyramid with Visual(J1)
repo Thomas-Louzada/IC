@@ -1,5 +1,7 @@
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 def d2(vc, i, j):
     return np.sum((vc[i] - vc[j])**2)
@@ -40,11 +42,35 @@ def gradiente(vc, segmentos, incidencias):
         grad[j] += 2 * (dist - math.sqrt(d2_valor)) * (vc[j] - vc[i]) / dist
     return grad
 
+def plot_vc(vc, faces, iteration=None):
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Plotando os vértices com numeração
+    ax.scatter(vc[:, 0], vc[:, 1], vc[:, 2], color='red')
+    for i, (x, y, z) in enumerate(vc):
+        ax.text(x, y, z, f'{i}', color='black', fontsize=12)
+
+    # Plotando as faces
+    for face in faces:
+        for i in range(len(face)):
+            for j in range(i + 1, len(face)):
+                ax.plot([vc[face[i], 0], vc[face[j], 0]], 
+                        [vc[face[i], 1], vc[face[j], 1]], 
+                        [vc[face[i], 2], vc[face[j], 2]], color='blue')
+
+    if iteration is not None:
+        plt.title(f'Iteration {iteration}')
+    
+    plt.show()
+
 def main():
     num_de_vertices = 5
     vc = np.random.uniform(-1, 1, (num_de_vertices, 3))
     faces = [[0, 1, 2], [0, 2, 3], [0, 3, 4], [1, 2, 3, 4]]
     segmentos = []
+
+    # Adicionar segmentos
     for f in faces:
         n = len(f)
         for i in range(n):
@@ -68,6 +94,8 @@ def main():
 
     velocity = np.zeros_like(vc)
 
+    plot_vc(vc, faces, iteration="inicial")  # Visualização inicial
+
     for i in range(max_iterations):
         grad_atual = gradiente(vc, segmentos, incidencias)
         norma_grad = np.linalg.norm(grad_atual)
@@ -80,16 +108,20 @@ def main():
 
         vc += velocity
 
-        if i % 100 == 0:
+        if i % 100 == 0 or i == max_iterations - 1:
             valor_da_funcao = funcao(vc, segmentos)
             print("\nIteração", i + 1, " - Valor da função:", valor_da_funcao)
             print("Vértices otimizados:")
             for idx, point in enumerate(vc):
                 print(f"Ponto {idx}: {point}")
 
+            plot_vc(vc, faces, iteration=i + 1)  # Visualização a cada 100 iterações
+
     print("\nVértices otimizados:")
     for idx, point in enumerate(vc):
         print(f"Ponto {idx}: {point}")
+
+    plot_vc(vc, faces, iteration="final")  # Visualização final
 
 if __name__ == '__main__':
     main()
