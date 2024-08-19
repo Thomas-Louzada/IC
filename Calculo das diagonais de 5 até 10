@@ -1,0 +1,30 @@
+import sympy as sp
+
+def calculate_diagonals_symbolic(n):
+    diagonals = []
+    angle_increment = 2 * sp.pi / n  # Incremento do ângulo entre vértices adjacentes
+
+    for i in range(1, n):
+        # Ângulo correspondente à diagonal
+        angle = i * angle_increment
+        # Expressão simbólica para o comprimento da diagonal
+        diagonal_length = 2 * sp.sin(angle / 2)
+        diagonals.append(diagonal_length)
+
+    return diagonals
+
+# Polígonos regulares
+polygons = {
+    'Pentágono': 5,
+    'Hexágono': 6,
+    'Octógono': 8,
+    'Decágono': 10
+}
+
+# Cálculo das diagonais
+for polygon_name, sides in polygons.items():
+    diagonals = calculate_diagonals_symbolic(sides)
+    print(f"Diagonais do {polygon_name} (lados = 1):")
+    for i, diagonal in enumerate(diagonals):
+        print(f"  Diagonal {i+1}: {diagonal}")
+    print()
