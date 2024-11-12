@@ -132,10 +132,11 @@ while (norma_grad > tolerance) and (i < max_iterations):
     norma_grad = np.linalg.norm(grad_atual)
 
 
-    velocity -= alpha * grad_atual
-    velocity *= (1 - friction_coeff)  # Aplicação da força de atrito
+    # velocity -= alpha * grad_atual
+    # velocity *= (1 - friction_coeff)  # Aplicação da força de atrito
+    # vc += velocity
+    velocity = (1 - alpha * friction_coeff)*velocity - alpha * grad_atual
+    vc = vc + alpha * velocity
 
-    vc += velocity
-    
     atualizar_objeto(vc, edges, faces)
     
