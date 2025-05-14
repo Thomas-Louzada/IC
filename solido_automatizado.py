@@ -76,17 +76,32 @@ def calcular_d2(n, i, j):
     if n == 3:
         return 1
     elif n == 4:
-        return (math.sqrt(2) ** 2) if abs(i-j) == 2 else 1
+        return math.sqrt(2) ** 2 if abs(i - j) == 2 else 1
     elif n == 5:
-        return (((1 + math.sqrt(5)) / 2) ** 2) if abs(i-j) in [2, 3] else 1
+        return ((1 + math.sqrt(5)) / 2) ** 2 if abs(i - j) in [2, 3] else 1
     elif n == 6:
-        if abs(i-j) == 3:
-            return (math.sqrt(3) ** 2)
-        elif abs(i-j) == 2:
-            return 4
+        return (math.sqrt(3)) ** 2 if abs(i - j) == 3 else (4 if abs(i - j) == 2 else 1)
+    elif n == 8:
+        if abs(i - j) == 4:
+            return (1 / math.sqrt(1 / 2 - math.sqrt(2) / 4)) ** 2
+        elif abs(i - j) == 3:
+            return (math.sqrt(math.sqrt(2) / 4 + 1 / 2) / math.sqrt(1 / 2 - math.sqrt(2) / 4)) ** 2
+        elif abs(i - j) == 2:
+            return (math.sqrt(2) / (2 * math.sqrt(1 / 2 - math.sqrt(2) / 4))) ** 2
         else:
             return 1
-    return 1
+    elif n == 10:
+        if abs(i - j) == 5:
+            return (2 / (-1 / 2 + math.sqrt(5) / 2)) ** 2
+        elif abs(i - j) == 4:
+            return (2 * math.sqrt(math.sqrt(5) / 8 + 5 / 8) / (-1 / 2 + math.sqrt(5) / 2)) ** 2
+        elif abs(i - j) == 3:
+            return (2 * (1 / 4 + math.sqrt(5) / 4) / (-1 / 2 + math.sqrt(5) / 2)) ** 2
+        elif abs(i - j) == 2:
+            return (2 * math.sqrt(5 / 8 - math.sqrt(5) / 8) / (-1 / 2 + math.sqrt(5) / 2)) ** 2
+        else:
+            return 1
+
 
 
 def gerar_segmentos(faces):
